@@ -1,0 +1,69 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary: #0F766E;
+  --color-primary-dark: #115E59;
+  --color-primary-light: #DDF7F2;
+  --color-accent: #EA580C;
+  --color-accent-light: #FFEDD5;
+  --color-ink: #10201D;
+  --color-bg-main: #F6F8F6;
+  --color-bg-section: #EEF4F0;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F8FAF8;
+  --color-text-primary: #10201D;
+  --color-text-secondary: #52635E;
+  --color-text-muted: #7A8985;
+  --color-border: #DCE5E0;
+  --color-border-light: #EAF0ED;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-main);
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+::selection {
+  color: white;
+  background: var(--color-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
