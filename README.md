@@ -2,6 +2,20 @@
 
 Anor Video 是一个视频链接解析、下载与 AI 总结问答项目。项目只包含前端和后端源码，未包含本地数据库、下载缓存、构建产物或任何真实密钥。
 
+## 界面展示
+
+### 视频解析与 AI 总结
+
+![视频解析与 AI 总结](assets/readme/video-summary.jpg)
+
+### 字幕文本
+
+![字幕文本](assets/readme/subtitle-view.jpg)
+
+### 思维导图
+
+![思维导图](assets/readme/mind-map.jpg)
+
 ## 项目结构
 
 ```text
