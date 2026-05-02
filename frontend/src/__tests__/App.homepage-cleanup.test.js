@@ -12,10 +12,6 @@ vi.mock('../api/history.js', () => ({
   fetchHistory: vi.fn(),
 }))
 
-vi.mock('../api/payment.js', () => ({
-  createCheckoutSession: vi.fn(),
-}))
-
 vi.mock('../api/auth.js', () => ({
   getSavedUser: vi.fn(() => null),
   fetchMe: vi.fn(),

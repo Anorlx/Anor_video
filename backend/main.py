@@ -167,12 +167,10 @@ async def proxy_thumbnail(url: str = Query(..., description="缩略图URL")):
 from api_summarize import router as summarize_router
 from api_auth import router as auth_router
 from api_history import router as history_router
-from api_payment import router as payment_router
 
 app.include_router(summarize_router)
 app.include_router(auth_router)
 app.include_router(history_router)
-app.include_router(payment_router)
 
 
 if __name__ == "__main__":

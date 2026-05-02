@@ -6,8 +6,6 @@ import App from '../App.vue'
 const { mockUser, parseVideo, fetchHistory, fetchMe } = vi.hoisted(() => {
   const mockUser = {
     email: 'history@example.com',
-    is_vip: true,
-    vip_expire_at: '2099-12-31T23:59:59+00:00',
   }
 
   return {
@@ -47,10 +45,6 @@ vi.mock('../api/video.js', () => ({
 
 vi.mock('../api/history.js', () => ({
   fetchHistory,
-}))
-
-vi.mock('../api/payment.js', () => ({
-  createCheckoutSession: vi.fn(),
 }))
 
 vi.mock('../api/auth.js', () => ({

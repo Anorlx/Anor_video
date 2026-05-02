@@ -9,8 +9,6 @@ describe('AppHeader history entry', () => {
       props: {
         user: {
           email: 'history@example.com',
-          is_vip: true,
-          vip_expire_at: '2099-12-31T23:59:59+00:00',
         },
       },
     })
@@ -21,5 +19,19 @@ describe('AppHeader history entry', () => {
 
     await historyButton.trigger('click')
     expect(wrapper.emitted('open-history')).toHaveLength(1)
+  })
+
+  it('does not show membership upsells or vip status for logged-in users', () => {
+    const wrapper = mount(AppHeader, {
+      props: {
+        user: {
+          email: 'free@example.com',
+        },
+      },
+    })
+
+    expect(wrapper.text()).not.toContain('VIP')
+    expect(wrapper.text()).not.toContain('会员')
+    expect(wrapper.emitted('open-vip')).toBeUndefined()
   })
 })

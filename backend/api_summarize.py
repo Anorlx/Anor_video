@@ -9,7 +9,7 @@ from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import BaseModel
 
 from auth import get_optional_user
-from database import check_and_increment_summary, FREE_DAILY_SUMMARY_LIMIT
+from database import check_and_increment_summary
 
 router = APIRouter(prefix="/api", tags=["AI 总结"])
 
@@ -29,8 +29,7 @@ def _check_summary_permission(user: dict | None):
     """
     检查 AI 总结权限。
     未登录用户：不允许使用。
-    免费用户：每日限制次数。
-    VIP 用户：无限制。
+    已登录用户：无限制。
     返回 (allowed, remaining, message)
     """
     if not user:
@@ -38,7 +37,7 @@ def _check_summary_permission(user: dict | None):
 
     allowed, remaining = check_and_increment_summary(user["id"])
     if not allowed:
-        return False, 0, f"今日免费 AI 总结次数已用完（每日 {FREE_DAILY_SUMMARY_LIMIT} 次），开通 VIP 可无限使用"
+        return False, 0, "用户不存在"
 
     return True, remaining, None
 
@@ -66,12 +65,12 @@ def _get_extractor():
 async def summarize_video(req: SummarizeRequest, user: dict | None = Depends(get_optional_user)) -> AsyncIterable[ServerSentEvent]:
     """
     AI 视频总结（SSE 流式）
-    事件类型: subtitle / summary / mindmap / done / error / quota
+    事件类型: subtitle / summary / mindmap / done / error
     """
     allowed, remaining, message = _check_summary_permission(user)
     if not allowed:
         yield ServerSentEvent(
-            raw_data=json.dumps({"message": message, "need_login": user is None, "need_vip": user is not None}, ensure_ascii=False),
+            raw_data=json.dumps({"message": message, "need_login": user is None}, ensure_ascii=False),
             event="error",
         )
         return
@@ -107,12 +106,6 @@ async def summarize_video(req: SummarizeRequest, user: dict | None = Depends(get
         yield ServerSentEvent(
             raw_data=json.dumps({"markdown": mindmap_md}, ensure_ascii=False),
             event="mindmap",
-        )
-
-        quota_info = {"remaining": remaining, "limit": FREE_DAILY_SUMMARY_LIMIT}
-        yield ServerSentEvent(
-            raw_data=json.dumps(quota_info, ensure_ascii=False),
-            event="quota",
         )
 
         yield ServerSentEvent(raw_data="[DONE]", event="done")

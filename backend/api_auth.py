@@ -1,5 +1,3 @@
-from datetime import datetime, timezone
-
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
@@ -27,21 +25,9 @@ class LoginRequest(BaseModel):
 
 
 def _build_user_response(user: dict) -> dict:
-    is_vip = False
-    vip_expire_at = None
-    if user.get("is_vip") and user.get("vip_expire_at"):
-        try:
-            expire = datetime.fromisoformat(user["vip_expire_at"])
-            is_vip = expire > datetime.now(timezone.utc)
-            vip_expire_at = user["vip_expire_at"]
-        except ValueError:
-            pass
-
     return {
         "id": user["id"],
         "email": user["email"],
-        "is_vip": is_vip,
-        "vip_expire_at": vip_expire_at,
     }
 
 
@@ -65,7 +51,7 @@ async def register(req: RegisterRequest):
         "success": True,
         "data": {
             "token": token,
-            "user": {"id": user["id"], "email": req.email, "is_vip": False, "vip_expire_at": None},
+            "user": {"id": user["id"], "email": req.email},
         },
     }
 
